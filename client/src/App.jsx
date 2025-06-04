@@ -17,7 +17,7 @@ function App() {
     
     <div style={{ padding:20, backgroundColor: "#fdf6f0", fontFamily: "Arial, sans-serif", color: "#3c3c3c", minHeight: "100vh" }}>
       <h1 style={{ color: "#8e7ab5"}}> Neighborhood Habit Tracker</h1>
-<p>Hello! Lets's build some good habits today. 💪</p>
+<p>Hello Lets's build some good habits today. 💪</p>
 <p>Your next habit could be: {newHabit}</p>
       <input
       
