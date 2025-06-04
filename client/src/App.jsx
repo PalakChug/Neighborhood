@@ -28,6 +28,16 @@ function App(){
     })
     .catch(console.error)
   } 
+  const deleteHabit = (habitToDelete) => {
+    fetch(`http://localhost:3000/habits/${encodeURIComponent(habitToDelete)}`,{
+      method: 'DELETE',
+    })
+    .then(res => res.json())
+    .then(data => {
+      setHabits(habits.filter(h => h != habitToDelete));
+    })
+    .catch(console.error);
+  };
   return (
   <div style ={{
     padding: 20,
@@ -39,8 +49,25 @@ function App(){
     <h1 style ={{ color: "#3e9ab1" }}>My Habits</h1>
     <p>Hello! Let's build some new habits today!</p>
     <ul>
-      {habits.map((habit, i) => (
-        <li key={i}>{habit}</li>
+      {habits.map((habit, index) => (
+        <li key={index}>
+          {habit}
+          <button 
+          onClick={() => deleteHabit(habit)}
+          style={{
+             marginLeft: 10,
+             padding: '2px 6px',
+             fontSize: '0.8rem',
+             color: 'white',
+             backgroundColor: 'red',
+             border: 'none',
+             borderRadius: '4px',
+             cursor: 'pointer' 
+            }}
+          >
+            x
+          </button>
+          </li>
       ))}
     </ul>
     <input 
