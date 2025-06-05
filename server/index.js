@@ -61,6 +61,18 @@ app.post('/habits/complete', (req,res) => {
     res.json({message: "Habit marked as complete."});
 });
 
+app.post('/habits/uncomplete', (req, res) => {
+    const { date, habit } = req.body;
+    if (!habit || !date) {
+        return res.status(400).json({error: "Missing date or habit" });
+    }
+    if (!habitCompletions[date]) {
+        return res.status(404).json({ error: "No completions found for this date" });
+    }
+    habitCompletions[date] = habitCompletions[date].filter(h => h !== habit);
+    res.json({message: "Habit unmarked as complete." });
+});
+
 app.get('/habits/completed/:date', (req,res) => {
     const date = req.params.date;
     const completed = habitCompletions[date] ||[];
