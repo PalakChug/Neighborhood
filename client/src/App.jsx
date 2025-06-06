@@ -14,7 +14,7 @@ function App(){
   const [habitBeingEdited, setHabitBeingEdited] = useState(null);
   const [editHabitText, setEditHabitText] = useState('');
   useEffect(() => {
-    fetch('http://localhost:3000/habits/')
+    fetch('https://habit-tracker-backend-wn7l.onrender.com/habits')
     .then(res => res.json())
     .then(data => {
       setHabits(data.habits);
@@ -22,13 +22,13 @@ function App(){
     })
     .catch(console.error);
   
-  fetch('http://localhost:3000/habits/count')
+  fetch('https://habit-tracker-backend-wn7l.onrender.com/habits/count')
     .then(res => res.json())
     .then(data => setHabitCount(data.count))
     .catch(console.error);
 
     const today = new Date().toISOString().split('T')[0];
-    fetch(`http://localhost:3000/habits/completed/${today}`)
+    fetch(`https://habit-tracker-backend-wn7l.onrender.com/habits/completed/${today}`)
     .then(res => res.json())
     .then(data => setCompletedToday(data.completed || []))
     .catch(console.error);
@@ -36,7 +36,7 @@ function App(){
 
   const addHabit = () => {
     if(!newHabit.trim()) return
-    fetch('http://localhost:3000/habits', {
+    fetch('https://habit-tracker-backend-wn7l.onrender.com/habits', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newHabit.trim() }),
@@ -49,7 +49,7 @@ function App(){
     .catch(console.error)
   } 
   const deleteHabit = (habitToDelete) => {
-    fetch(`http://localhost:3000/habits/${encodeURIComponent(habitToDelete)}`,{
+    fetch(`https://habit-tracker-backend-wn7l.onrender.com/habits/${encodeURIComponent(habitToDelete)}`,{
       method: 'DELETE',
     })
     .then(res => res.json())
@@ -62,8 +62,8 @@ function App(){
     const today = new Date(). toISOString().split('T')[0];// Format: "YYYY-MM-DD"
     const alreadyCompleted = completedToday.includes(habit);
     const url = alreadyCompleted
-      ? 'http://localhost:3000/habits/uncomplete'
-      : 'http://localhost:3000/habits/complete';
+      ? 'https://habit-tracker-backend-wn7l.onrender.com/habits/uncomplete'
+      : 'https://habit-tracker-backend-wn7l.onrender.com/habits/complete';
     console.log(alreadyCompleted ? "Unchecking..." : "Checking...");
    
     fetch(url, {
@@ -83,7 +83,7 @@ function App(){
   }
 
   const saveEdit = (oldHabit) => {
-    fetch(`http://localhost:3000/habits/${encodeURIComponent(oldHabit)}`, {
+    fetch(`https://habit-tracker-backend-wn7l.onrender.com/habits/${encodeURIComponent(oldHabit)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ newHabit: editHabitText }),
