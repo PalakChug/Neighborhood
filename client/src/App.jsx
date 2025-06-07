@@ -13,8 +13,9 @@ function App(){
   const [hoveredButton, setHoveredButton] = useState(null);
   const [habitBeingEdited, setHabitBeingEdited] = useState(null);
   const [editHabitText, setEditHabitText] = useState('');
+  const [serverbaseurl, setServerBaseUrl] = useState('http://localhost:3000');
   useEffect(() => {
-    fetch('https://habit-tracker-backend-wn7l.onrender.com/habits')
+    fetch(`${serverbaseurl}/habits`)
     .then(res => res.json())
     .then(data => {
       setHabits(data.habits);
@@ -22,13 +23,13 @@ function App(){
     })
     .catch(console.error);
   
-  fetch('https://habit-tracker-backend-wn7l.onrender.com/habits/count')
+  fetch(serverbaseurl+'/habits/count')
     .then(res => res.json())
     .then(data => setHabitCount(data.count))
     .catch(console.error);
 
     const today = new Date().toISOString().split('T')[0];
-    fetch(`https://habit-tracker-backend-wn7l.onrender.com/habits/completed/${today}`)
+    fetch(`${serverbaseurl}/habits/completed/${today}`)
     .then(res => res.json())
     .then(data => setCompletedToday(data.completed || []))
     .catch(console.error);
@@ -36,7 +37,7 @@ function App(){
 
   const addHabit = () => {
     if(!newHabit.trim()) return
-    fetch('https://habit-tracker-backend-wn7l.onrender.com/habits', {
+    fetch(serverbaseurl+'/habits', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newHabit.trim() }),
@@ -47,9 +48,10 @@ function App(){
       setNewHabit('')
     })
     .catch(console.error)
-  } 
+  }
+    
   const deleteHabit = (habitToDelete) => {
-    fetch(`https://habit-tracker-backend-wn7l.onrender.com/habits/${encodeURIComponent(habitToDelete)}`,{
+    fetch(`${serverbaseurl}/habits/${encodeURIComponent(habitToDelete)}`,{
       method: 'DELETE',
     })
     .then(res => res.json())
@@ -62,8 +64,8 @@ function App(){
     const today = new Date(). toISOString().split('T')[0];// Format: "YYYY-MM-DD"
     const alreadyCompleted = completedToday.includes(habit);
     const url = alreadyCompleted
-      ? 'https://habit-tracker-backend-wn7l.onrender.com/habits/uncomplete'
-      : 'https://habit-tracker-backend-wn7l.onrender.com/habits/complete';
+      ? serverbaseurl+'/habits/uncomplete'
+      : serverbaseurl+'/habits/complete';
     console.log(alreadyCompleted ? "Unchecking..." : "Checking...");
    
     fetch(url, {
@@ -83,7 +85,7 @@ function App(){
   }
 
   const saveEdit = (oldHabit) => {
-    fetch(`https://habit-tracker-backend-wn7l.onrender.com/habits/${encodeURIComponent(oldHabit)}`, {
+    fetch(`${serverbaseurl}/habits/${encodeURIComponent(oldHabit)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ newHabit: editHabitText }),
@@ -116,6 +118,7 @@ function App(){
         return (
         <li 
           key={i} 
+          data-index={i}
           style={{ 
             display: "flex", 
             alignItems: "center", 
@@ -143,8 +146,8 @@ function App(){
                 style={{
                   padding: "4px 6px",
                   fontSize: "12px",
-                  backgroundColor: "#bbf7d0",
-                  color: "#166534",
+                  backgroundColor: "solid #bbf7d0",
+                  color: "solid #166534",
                   border: "none",
                   borderRadius: "4px"
                 }}
@@ -179,8 +182,8 @@ function App(){
               style={{
                 padding: "4px 6px",
                 fontSize: "12px",
-                backgroundColor: "#bae6fd", // pastel blue
-                color: "#0c4a6e",
+                backgroundColor: "solid #bae6fd",
+                color: "solid #0c4a6e",
                 border: "none",
                 borderRadius: "4px"
               }}
@@ -196,8 +199,8 @@ function App(){
                 style={{
                   padding: "4px 6px",
                   fontSize: "12px",
-                  backgroundColor: "#fecaca", // pastel green
-                  color: "#166534",
+                  backgroundColor: "solid #fecaca",
+                  color: "solid #166534",
                   border: "none",
                   borderRadius: "4px",
                   cursor: "pointer"
@@ -229,7 +232,7 @@ function App(){
       zIndex: 1000
     }}>
       <div style={{
-        background: '#fff0f5', // light lavender pink
+        background: 'solid #fff0f5', // rlly light lavender pink
         padding: '20px',
         borderRadius: '12px',
         textAlign: 'center',
@@ -248,7 +251,7 @@ function App(){
         style={{ 
           marginRight: '10px',
           padding: '6px 12px',
-          backgroundColor: '#f28b82',
+          backgroundColor: 'solid #f28b82',
           color: 'white',
           border:'none',
           borderRadius: '6px',
@@ -267,7 +270,7 @@ function App(){
         }}
         style={{
           padding: '6px 12px',
-          backgroundColor: '#aecbfa',
+          backgroundColor: 'solid #aecbfa',
           color: 'white',
           border: 'none',
           borderRadius: '6px',
@@ -280,7 +283,7 @@ function App(){
           Cancel
         </button>
       </div>
-    </div> 
+    </div>  
    )}
    </div>
   )};
